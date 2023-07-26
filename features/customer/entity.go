@@ -2,6 +2,8 @@ package customer
 
 import (
 	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
 type CustomerEntity struct {
@@ -10,11 +12,12 @@ type CustomerEntity struct {
 	LastName    string
 	PhoneNumber string
 	Email       string
+	Password    string
 	Address     string
-	Orders      []OrderEntity
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   time.Time
+	Orders      []OrderEntity
 }
 
 type OrderEntity struct {
@@ -28,4 +31,19 @@ type OrderEntity struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	DeletedAt     time.Time
+}
+
+type CustomerRepository interface {
+	Register(req CustomerEntity) (CustomerEntity, error)
+	Login(req CustomerEntity) (CustomerEntity, string, error)
+}
+
+type CustomerService interface {
+	Register(req CustomerEntity) (CustomerEntity, error)
+	Login(req CustomerEntity) (CustomerEntity, string, error)
+}
+
+type CustomerController interface {
+	Register() echo.HandlerFunc
+	Login() echo.HandlerFunc
 }

@@ -2,6 +2,8 @@ package order
 
 import (
 	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
 type OrderEntity struct {
@@ -37,4 +39,36 @@ type PurchaseReceiptEntity struct {
 	CreatedAt         time.Time
 	UpdatedAt         time.Time
 	DeletedAt         time.Time
+}
+
+type CartEntity struct {
+	CartID     string
+	CustomerID string
+	ItemID     string
+	Quantity   uint
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  time.Time
+}
+
+type Repository interface {
+	GetReceipt(orderID string) (PurchaseReceiptEntity, error)
+	AddToCart(itemID string)
+	RemoveFromCart(itemID string)
+	GetWeeklyIncomeReport(start_date, end_date time.Time)
+	GetMonthlyIncomeReport()
+}
+
+type Service interface {
+	GetReceipt(orderID string) (PurchaseReceiptEntity, error)
+	AddToCart(itemID string)
+	RemoveFromCart(itemID string)
+	GetWeeklyIncomeReport(start_date, end_date time.Time)
+	GetMonthlyIncomeReport()
+}
+
+type Controller interface {
+	GetReceipt() echo.HandlerFunc
+	AddToCart() echo.HandlerFunc
+	GetIncomeReport() echo.HandlerFunc
 }
