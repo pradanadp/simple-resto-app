@@ -149,6 +149,16 @@ func (oc *orderController) GetWeeklyIncomeReport() echo.HandlerFunc {
 // RemoveItemFromCart implements order.Controller.
 func (oc *orderController) RemoveItemFromCart() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		_, err := middlewares.ExtractToken(c)
+		if err != nil {
+			log.Error("missing or malformed JWT")
+
+			return utils.Response(c, utils.RequestResponse{
+				Code:  http.StatusUnauthorized,
+				Error: "missing or malformed JWT",
+			})
+		}
+
 		itemID := c.Param("item_id")
 
 		if itemID == "" {
@@ -158,7 +168,7 @@ func (oc *orderController) RemoveItemFromCart() echo.HandlerFunc {
 			})
 		}
 
-		err := oc.service.RemoveItemFromCart(itemID)
+		err = oc.service.RemoveItemFromCart(itemID)
 		if err != nil {
 			log.Errorf("failed to remove item from cart: %v", err)
 			return utils.Response(c, utils.RequestResponse{
