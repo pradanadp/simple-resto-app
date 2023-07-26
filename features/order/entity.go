@@ -51,24 +51,32 @@ type CartEntity struct {
 	DeletedAt  time.Time
 }
 
+type IncomeReportEntity struct {
+	StartDate   time.Time
+	EndDate     time.Time
+	TotalIncome float64
+}
+
 type Repository interface {
 	GetReceipt(orderID string) (PurchaseReceiptEntity, error)
-	AddToCart(itemID string)
-	RemoveFromCart(itemID string)
-	GetWeeklyIncomeReport(start_date, end_date time.Time)
-	GetMonthlyIncomeReport()
+	AddItemToCart(itemID, customerID string, quantity uint) error
+	RemoveItemFromCart(itemID string) error
+	GetWeeklyIncomeReport(startDate, endDate string) (IncomeReportEntity, error)
+	GetMonthlyIncomeReport(yearMonth string) (IncomeReportEntity, error)
 }
 
 type Service interface {
 	GetReceipt(orderID string) (PurchaseReceiptEntity, error)
-	AddToCart(itemID string)
-	RemoveFromCart(itemID string)
-	GetWeeklyIncomeReport(start_date, end_date time.Time)
-	GetMonthlyIncomeReport()
+	AddItemToCart(itemID, customerID string, quantity uint) error
+	RemoveItemFromCart(itemID string) error
+	GetWeeklyIncomeReport(startDate, endDate string) (IncomeReportEntity, error)
+	GetMonthlyIncomeReport(yearMonth string) (IncomeReportEntity, error)
 }
 
 type Controller interface {
 	GetReceipt() echo.HandlerFunc
-	AddToCart() echo.HandlerFunc
-	GetIncomeReport() echo.HandlerFunc
+	AddItemToCart() echo.HandlerFunc
+	RemoveItemFromCart() echo.HandlerFunc
+	GetWeeklyIncomeReport() echo.HandlerFunc
+	GetMonthlyIncomeReport() echo.HandlerFunc
 }

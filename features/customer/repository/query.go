@@ -76,7 +76,7 @@ func (cq *customerQuery) Register(req customer.CustomerEntity) (customer.Custome
 	return CustomerModelToEntity(request), nil
 }
 
-func New(db *gorm.DB) customer.CustomerRepository {
+func New(db *gorm.DB) customer.Repository {
 	return &customerQuery{
 		db: db,
 	}

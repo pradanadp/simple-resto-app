@@ -15,8 +15,8 @@ var (
 )
 
 type customerService struct {
-	customerRepository customer.CustomerRepository
-	validator          *validator.Validate
+	repository customer.Repository
+	validator  *validator.Validate
 }
 
 // Login implements customer.CustomerService.
@@ -33,7 +33,7 @@ func (cs *customerService) Login(req customer.CustomerEntity) (customer.Customer
 		}
 	}
 
-	result, token, err := cs.customerRepository.Login(req)
+	result, token, err := cs.repository.Login(req)
 	if err != nil {
 		message := ""
 		switch {
@@ -87,7 +87,7 @@ func (cs *customerService) Register(req customer.CustomerEntity) (customer.Custo
 		return customer.CustomerEntity{}, errors.New("phone number is required")
 	}
 
-	newUser, err := cs.customerRepository.Register(req)
+	newUser, err := cs.repository.Register(req)
 	if err != nil {
 		log.Error(err.Error())
 		return customer.CustomerEntity{}, err
@@ -96,9 +96,9 @@ func (cs *customerService) Register(req customer.CustomerEntity) (customer.Custo
 	return newUser, nil
 }
 
-func New(c customer.CustomerRepository, v *validator.Validate) customer.CustomerService {
+func New(c customer.Repository, v *validator.Validate) customer.Service {
 	return &customerService{
-		customerRepository: c,
-		validator:          v,
+		repository: c,
+		validator:  v,
 	}
 }

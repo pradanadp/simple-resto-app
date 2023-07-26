@@ -3,6 +3,7 @@ package repository
 import (
 	"time"
 
+	"github.com/pradanadp/simple-resto-app/features/order"
 	"gorm.io/gorm"
 )
 
@@ -79,4 +80,12 @@ type PurchaseReceipt struct {
 	CreatedAt         time.Time      `gorm:"type:datetime"`
 	UpdatedAt         time.Time      `gorm:"type:datetime"`
 	DeletedAt         gorm.DeletedAt `gorm:"index" json:"-"`
+}
+
+func CartEntityToModel(c order.CartEntity) Cart {
+	return Cart{
+		CustomerID: c.CustomerID,
+		ItemID:     c.ItemID,
+		Quantity:   c.Quantity,
+	}
 }

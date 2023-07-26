@@ -33,17 +33,17 @@ type OrderEntity struct {
 	DeletedAt     time.Time
 }
 
-type CustomerRepository interface {
+type Repository interface {
 	Register(req CustomerEntity) (CustomerEntity, error)
 	Login(req CustomerEntity) (CustomerEntity, string, error)
 }
 
-type CustomerService interface {
+type Service interface {
 	Register(req CustomerEntity) (CustomerEntity, error)
 	Login(req CustomerEntity) (CustomerEntity, string, error)
 }
 
-type CustomerController interface {
+type Controller interface {
 	Register() echo.HandlerFunc
 	Login() echo.HandlerFunc
 }
