@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/pradanadp/simple-resto-app/app/config"
+	_customer "github.com/pradanadp/simple-resto-app/features/customer/repository"
+	_order "github.com/pradanadp/simple-resto-app/features/order/repository"
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,16 +23,18 @@ func InitDB(c *config.AppConfig) *gorm.DB {
 
 	db := openDB(dsn)
 
-	// err = db.AutoMigrate(
-	// 	&user.User{},
-	// 	&user.Position{},
-	// 	&company.Company{},
-	// 	&transaction.Transaction{},
-	// )
-	// if err != nil {
-	// 	log.Panic(err.Error())
-	// 	panic(err.Error())
-	// }
+	err := db.AutoMigrate(
+		&_customer.Customer{},
+		&_order.Order{},
+		&_order.Cart{},
+		&_order.Item{},
+		&_order.OrderItem{},
+		&_order.PurchaseReceipt{},
+	)
+	if err != nil {
+		log.Panic(err.Error())
+		panic(err.Error())
+	}
 
 	log.Info("Success to connect and migrate to database")
 	return db
@@ -45,5 +49,3 @@ func openDB(dsn string) *gorm.DB {
 
 	return db
 }
-
-// func migrateDB()

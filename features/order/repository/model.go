@@ -73,6 +73,7 @@ type Item struct {
 
 type PurchaseReceipt struct {
 	PurchaseReceiptID string         `gorm:"primaryKey;type:varchar(255)"`
+	OrderID           string         `gorm:"type:varchar(255);not null"`
 	PaymentMethod     string         `gorm:"type:('credit_card', 'cash', 'transfer', 'e_wallet', 'e_money', 'qr_code');default:'cash'"`
 	ReceiptTotal      float64        `gorm:"type:decimal(10,2);not null"`
 	ReceiptDate       time.Time      `gorm:"type:datetime"`
